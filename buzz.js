@@ -1,11 +1,10 @@
-var ref = new Firebase("urlmao");
-
-var buzzButton, resetButton, thisUser, userId;
+var buzzButton, resetButton, saveButton, userName;
 window.onload = function() {
     buzzButton = document.getElementById("buzzButton");
     buzzButton.addEventListener("click", function() {
         ref.child("status").set({
-            buttonClicked: true
+            buttonClicked: true,
+            user: userName
         });
         buzzButton.setAttribute("disabled", "disabled");
     });
@@ -13,24 +12,23 @@ window.onload = function() {
     resetButton = document.getElementById("resetButton");
     resetButton.addEventListener("click", function() {
         ref.child("status").set({
-            buttonClicked: false
+            buttonClicked: false,
+            user: userName
         });
     });
+
+    saveButton = document.getElementById("saveButton");
+    saveButton.addEventListener("click", function() {
+        var users, numUsers;
+        ref.child("users").once('value', function(snapshot) {
+            users = getUsersArray(snapshot.val());
+            numUsers = users.length;
+            userName = getUserName(users, numUsers);
+            ref.child("users").push({userName: userName});
+        });
+    })
 };
 
-// ref.child("users").once('value', function(snapshot) {
-//     var users = getUsersArray(snapshot.exportVal().users);
-//     var numUsers = users.length;
-//     thisUser = "User " + (numUsers + 1);
-//     userRef.update( {
-//         nickname: thisUser
-//     });
-//
-//     document.createTextNode(thisUser);
-// });
-//
-// var userRef = ref.child("users").push({nickname: "User"});
-// userId = userRef.key();
 
 ref.child("status").on('value', function(snapshot) {
     var status = snapshot.val();
@@ -42,10 +40,21 @@ ref.child("status").on('value', function(snapshot) {
     }
 });
 
+
 function getUsersArray(userObj) {
 	var users = [];
 	for (user in userObj) {
 		users.push(userObj[user]);
 	}
 	return users;
+}
+
+function getUserName(users, numUsers) {
+    var userInput = document.getElementById('user').value;
+    if (userInput !== "") {
+        return userInput;
+    }
+    else {
+        return "User " + (numUsers + 1);
+    }
 }
