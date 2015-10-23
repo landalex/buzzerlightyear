@@ -32,9 +32,9 @@ window.onload = function() {
 // var userRef = ref.child("users").push({nickname: "User"});
 // userId = userRef.key();
 
-ref.child("status").on('child_changed', function(snapshot) {
-    var buttonClicked = snapshot.val();
-    if (buttonClicked) {
+ref.child("status").on('value', function(snapshot) {
+    var status = snapshot.val();
+    if (status.buttonClicked) {
         buzzButton.setAttribute("disabled", "disabled");
     }
     else {
