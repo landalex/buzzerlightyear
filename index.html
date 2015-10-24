@@ -1,12 +1,20 @@
 <html>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="style.css">
 <script src="https://cdn.firebase.com/js/client/2.3.1/firebase.js"></script>
 <script src='vars.js'></script>
 <script src='buzz.js'></script>
 <body>
-    <input type="text" id="user"><button id="saveButton" type="button" class="btn btn-success">Save</button>
-    <button id="buzzButton" type="button" class="btn btn-danger btn-lg">Buzz</button>
-    <button id="resetButton" type="button" class="btn btn-primary btn-lg">Reset</button>
-    <h1 id="buzzText" style="visibility: hidden">You buzzed in first!</h1>
+    <div id="textDiv">
+        <h1 id="buzzText" style="visibility: hidden">You buzzed in first!</h1>
+    </div>
+    <div id="userNameDiv">
+        <input type="text" id="user"><button id="saveButton" type="button" class="btn btn-success">Save</button>
+    </div>
+    <br>
+    <div id="buttonDiv">
+        <button id="buzzButton" type="button" class="btn btn-danger btn-huge">Buzz</button>
+        <button id="resetButton" type="button" class="btn btn-primary btn-lg">Reset</button>
+    </div>
 </body>
 </html>

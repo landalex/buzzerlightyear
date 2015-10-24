@@ -1,6 +1,6 @@
-var buzzButton, resetButton, saveButton, buzzText, userName, userId;
-userName = "No Name";
-userId = "42";
+var buzzButton, resetButton, saveButton, buzzText;
+var userName = "No Name";
+var userId = "42";
 window.onload = function() {
     buzzButton = document.getElementById("buzzButton");
     buzzButton.addEventListener("click", function() {
@@ -22,7 +22,7 @@ window.onload = function() {
             userName = getUserName(users, numUsers);
             userId = ref.child("users").push({userName: userName}).key();
         });
-    })
+    });
 
     buzzText = document.getElementById("buzzText");
 };
@@ -41,6 +41,7 @@ ref.child("status").on('value', function(snapshot) {
     }
     else {
         buzzButton.removeAttribute("disabled");
+        buzzText.style.visibility = "hidden";
     }
 
 });
@@ -48,7 +49,7 @@ ref.child("status").on('value', function(snapshot) {
 
 function getUsersArray(userObj) {
 	var users = [];
-	for (user in userObj) {
+	for (var user in userObj) {
 		users.push(userObj[user]);
 	}
 	return users;
