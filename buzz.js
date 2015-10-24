@@ -1,20 +1,16 @@
-var buzzButton, resetButton, saveButton, userName;
+var buzzButton, resetButton, saveButton, buzzText, userName, userId;
+userName = "No Name";
+userId = "42";
 window.onload = function() {
     buzzButton = document.getElementById("buzzButton");
     buzzButton.addEventListener("click", function() {
-        ref.child("status").set({
-            buttonClicked: true,
-            user: userName
-        });
+        setButton(true);
         buzzButton.setAttribute("disabled", "disabled");
     });
 
     resetButton = document.getElementById("resetButton");
     resetButton.addEventListener("click", function() {
-        ref.child("status").set({
-            buttonClicked: false,
-            user: userName
-        });
+        setButton(false);
     });
 
     saveButton = document.getElementById("saveButton");
@@ -24,9 +20,11 @@ window.onload = function() {
             users = getUsersArray(snapshot.val());
             numUsers = users.length;
             userName = getUserName(users, numUsers);
-            ref.child("users").push({userName: userName});
+            userId = ref.child("users").push({userName: userName}).key();
         });
     })
+
+    buzzText = document.getElementById("buzzText");
 };
 
 
@@ -34,10 +32,17 @@ ref.child("status").on('value', function(snapshot) {
     var status = snapshot.val();
     if (status.buttonClicked) {
         buzzButton.setAttribute("disabled", "disabled");
+        if (status.userId === userId) {
+            buzzText.style.visibility = "visible";
+        }
+        else {
+            buzzText.style.visibility = "hidden";
+        }
     }
     else {
         buzzButton.removeAttribute("disabled");
     }
+
 });
 
 
@@ -57,4 +62,12 @@ function getUserName(users, numUsers) {
     else {
         return "User " + (numUsers + 1);
     }
+}
+
+function setButton(clicked) {
+    ref.child("status").set({
+        buttonClicked: clicked,
+        user: userName,
+        userId: userId
+    });
 }
